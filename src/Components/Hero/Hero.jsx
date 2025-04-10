@@ -15,7 +15,7 @@ const Hero = () => {
                         <p className="mb-5 font-light">
                         Discover rare collectibles, luxury goods, and vintage treasures in our curated auctions
                         </p>
-                        <button className="btn rounded-full">Explore Auctions</button>
+                        <button className="btn rounded-full text-[20px] p-6">Explore Auctions</button>
                     </div>
                 </div>
             </div>
