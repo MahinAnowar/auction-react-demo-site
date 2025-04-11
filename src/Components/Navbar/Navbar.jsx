@@ -5,7 +5,7 @@ import { GrNotification } from "react-icons/gr";
 const Navbar = () => {
     return (
         <div>
-            <div className="navbar bg-base-100 shadow-sm px-[100px] work-sans-poppins">
+            <div className="navbar bg-base-100 shadow-sm px-[100px] work-sans-sora">
                 <div className="navbar-start">
 
                     <a className="btn btn-ghost text-2xl gap-0 font-bold"><span className="text-[#0E2954]">Auction</span><span className="text-[#adcf42]">Gallery</span></a>

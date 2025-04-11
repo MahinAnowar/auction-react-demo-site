@@ -7,8 +7,11 @@ import Hero from './Components/Hero/Hero'
 import Footer from './Components/Footer/Footer'
 import Mainbody from './Components/Mainbody/Mainbody'
 
+
 function App() {
-  const [count, setCount] = useState(0)
+ 
+
+
 
   return (
     <>
@@ -16,7 +19,8 @@ function App() {
       <Hero></Hero>
       <Mainbody></Mainbody>
       <Footer></Footer>
-    
+
+      <div id="cursor-follower-icon" className="cursor-follower-base"></div>
     </>
   )
 }
