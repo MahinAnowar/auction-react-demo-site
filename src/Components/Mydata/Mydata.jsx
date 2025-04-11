@@ -1,10 +1,15 @@
 import React, { useRef, useEffect } from 'react';
-
+import { showToast } from '../../utils/toastService';
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 
+
+
+
 const Mydata = ({ mydata, handleAddData }) => {
     //console.log(handleAddData);
+
+    
     const targetButtonRef = useRef(null);
 
     useEffect(() => {
@@ -49,8 +54,16 @@ const Mydata = ({ mydata, handleAddData }) => {
         };
 
     }, []);
+
+
+ 
+
+
+
     return (
         <div className='py-4 px-5 grid grid-cols-6 gap-3 border-t-2 border-[#DCE5F3]'>
+
+            
             
             <div className='flex gap-4 col-span-3'>
                 <img src={mydata.image} className='w-16 h-12 overflow-hidden' alt="" />
@@ -59,7 +72,7 @@ const Mydata = ({ mydata, handleAddData }) => {
             </div>
             <div><p className='font-semibold'>${mydata.currentBidPrice}</p></div>
             <div><p className='font-semibold'>{mydata.timeLeft} Days left</p></div>
-            <button id={`heartBtnContainer-${mydata.id}`} className=' text-2xl cursor-pointer' onClick={() => handleAddData(mydata)}>
+            <button id={`heartBtnContainer-${mydata.id}`}  className=' text-2xl cursor-pointer' onClick={() => handleAddData(mydata)}>
                 <i id={`heartBtn-${mydata.id}`} className="fa-regular hover:text-red-500 fa-heart"></i>
             </button>
 

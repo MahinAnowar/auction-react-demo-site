@@ -1,82 +1,82 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { CiHeart } from "react-icons/ci";
-import Auction from '../Auctions/Auction';
+import Auction from '../Auctions/Auction'; // Assuming Auction component exists and receives handleAddData and favoriteItems
 import { RxCross2 } from "react-icons/rx";
-import Mydata from '../Mydata/Mydata';
+// import Mydata from '../Mydata/Mydata'; // Removed if not used directly here
 
 const Mainbody = () => {
 
-    const [addedItem, setAdded] = useState([]);
+    const [favoriteItems, setFavoriteItems] = useState([]);
 
-    const handleAddData = (mydata) => {
-        // setAdded(...addedItem, mydata)
-        //console.log(mydata.title);
+    const handleAddData = (itemToAdd) => {
+        // Check if item is already in favorites
+        const isAlreadyAdded = favoriteItems.some(item => item.id === itemToAdd.id);
 
-       
-        const mainDiv = document.getElementById("addedSectionPre");
-        mainDiv.classList.add("hidden");
-        const newDiv = document.createElement('div');
-        newDiv.innerHTML = `
-            
+        if (!isAlreadyAdded) {
+            // Update state with the new item
+            setFavoriteItems(prevItems => [...prevItems, itemToAdd]);
 
-                        <div class='border-t-2 border-[#DCE5F3] p-4'>
-                            <div class='flex gap-4'>
-                                <div class=''>
-                                    <img src=${mydata.image} class='w-16 h-12 overflow-hidden' alt="" />
-                                </div>
+            // --- DOM Manipulation (kept for visual feedback on original list/empty message) ---
+            const mainDiv = document.getElementById("addedSectionPre");
+            if (mainDiv) {
+                mainDiv.classList.add("hidden");
+            }
 
-                                <div>
-                            
-                                    
-                                    <h1>${mydata.title}</h1>
-                                    
-                                    
+            // Update heart button appearance on the original item in Auction component
+            // Ideally, Auction component should handle this based on favoriteItems prop
+            const heartBtnContainer = document.getElementById(`heartBtnContainer-${itemToAdd.id}`);
+            const heartBtnADContainer = document.getElementById(`heartBtnaD-${itemToAdd.id}`);
 
-                                <div class='flex '>
-                                <p class=''><span class=''>$${mydata.currentBidPrice}</span> <span class='ml-[14px]'>Bids: ${mydata.bidsCount}</span></p>
-                                <button class='ml-[160px] mt-[-17px] btn btn-ghost'><i class="fa-solid fa-xmark"></i></button>
+            if (heartBtnContainer) {
+                heartBtnContainer.disabled = true;
+                heartBtnContainer.classList.add("hidden");
+            }
+            if (heartBtnADContainer) {
+                heartBtnADContainer.classList.remove("hidden");
+                heartBtnADContainer.classList.add("text-red-500"); // Make added heart red
+            }
+            // --- End DOM Manipulation ---
 
-                                </div>
-                                </div>
-                                
-                                
-                            </div>
+        } else {
+            console.log("Item already added to favorites.");
+        }
+    };
 
-                            
+    const handleRemoveItem = (itemIdToRemove) => {
+        setFavoriteItems(prevItems => prevItems.filter(item => item.id !== itemIdToRemove));
 
-                           
-                        </div>
+         // --- DOM Manipulation (to revert heart button state on original item) ---
+         // Ideally, Auction component should handle this based on favoriteItems prop
+        const heartBtnContainer = document.getElementById(`heartBtnContainer-${itemIdToRemove}`);
+        const heartBtnADContainer = document.getElementById(`heartBtnaD-${itemIdToRemove}`);
 
-                        
+         if (heartBtnContainer) {
+             heartBtnContainer.disabled = false;
+             heartBtnContainer.classList.remove("hidden");
+         }
+         if (heartBtnADContainer) {
+             heartBtnADContainer.classList.add("hidden");
+             heartBtnADContainer.classList.remove("text-red-500");
+         }
+         // Check if the list becomes empty to show the placeholder message
+         if (favoriteItems.length === 1) { // If this was the last item
+            const mainDiv = document.getElementById("addedSectionPre");
+            if (mainDiv) {
+                mainDiv.classList.remove("hidden");
+            }
+        }
+         // --- End DOM Manipulation ---
+    };
 
-                    
-        
-        `;
-
-
-
-
-        document.querySelector('#addedContainer').appendChild(newDiv);
-        const heartBtn = document.getElementById(`heartBtn-${mydata.id}`);
-        const heartBtnContainer = document.getElementById(`heartBtnContainer-${mydata.id}`);
-        const heartBtnADContainer = document.getElementById(`heartBtnaD-${mydata.id}`);
-        
-        heartBtnContainer.disabled=true;
-        heartBtnContainer.classList.add("hidden");
-        heartBtnADContainer.classList.remove("hidden");
-        // heartBtn.classList.add("text-red-500");
-        heartBtnContainer.classList.add("bg-white");
-        //heartBtnContainer.classList.add("disabled:cursor-not-allowed");
-        // heartBtn.classList.remove("fa-regular");
-    }
+    // Calculate total price
+    const totalPrice = favoriteItems.reduce((sum, item) => {
+        // Ensure currentBidPrice is treated as a number
+        const price = Number(item.currentBidPrice) || 0; // Use Number() or parseFloat()
+        return sum + price;
+    }, 0); // Start sum from 0
 
     return (
-
-        
-
         <div className="bg-[#EBF0F5] px-[100px] py-14">
-
-  
             <h1 className="text-[#0E2954] text-3xl font-medium mb-3">Active Auctions</h1>
             <p>Discover and bid on extraordinary items</p>
 
@@ -88,74 +88,69 @@ const Mainbody = () => {
                         <div>Time Left</div>
                         <div>Bid Now</div>
                     </div>
-                    {/* <div className='py-4 px-5 grid grid-cols-6 gap-3 border-t-2 border-[#DCE5F3]'>
-                        <div className='flex gap-4 col-span-3'>
-                            <img src="https://i.ibb.co.com/4nSFMVdn/Bid1-min.png" className='w-[100px]' alt="" />
-                            <p>Vintage Leica M3 Camera
-                            </p>
-                        </div>
-                        <div><p className='font-semibold'>$2,850</p></div>
-                        <div><p className='font-semibold'>2 Days left</p></div>
-                        <div><p className='text-2xl'><CiHeart /></p></div>
-                    </div> */}
-
-                    <Auction handleAddData={handleAddData}></Auction>
-
-
-
+                    {/* Pass handler and favorite items list to Auction component */}
+                    {/* Auction needs to be adapted to potentially use favoriteItems to show heart status */}
+                    <Auction handleAddData={handleAddData} favoriteItems={favoriteItems}></Auction>
                 </div>
 
                 <div className='bg-white rounded-4xl py-4'>
-                    <div className='flex text-center w-[200px] mx-[130px] pb-4'>
-                        <p className='text-3xl'><CiHeart /></p>
+                    <div className='flex text-center w-[200px] mx-[130px] pb-4 items-center justify-center'> {/* Centered items */}
+                        <p className='text-3xl mr-2'><CiHeart /></p> {/* Added margin */}
                         <h1 className='text-2xl font-semibold'>Favorite Items</h1>
                     </div>
-                    <div className='text-center py-8 justify-center place-items-center border-t-2 border-[#DCE5F3]' id="addedSectionPre">
-                        <p className='text-xl font-semibold'>No favorites yet</p>
-                        <p className='py-4 w-[60%]'>Click the heart icon on any item to add it to your favorites</p>
-                    </div>
 
-                    <div id='addedContainer'>
-
-                    </div>
-
-                    {/* <div className=''>
-
-                        <div className='border-t-2 border-[#DCE5F3] p-4'>
-                            <div className='flex gap-4'>
-                                <div className=''>
-                                    <img src="https://i.ibb.co.com/4nSFMVdn/Bid1-min.png" className='w-[80px]' alt="" />
-                                </div>
-                                <div className='flex '>
-                                    <h1>Vintage Leica M3 Camera</h1>
-                                    <button className='ml-[45px] mt-[-7px] btn btn-ghost'><RxCross2 size="25" /></button>
-                                </div>
-                                
-                                
-                            </div>
-
-                            <p className='ml-[100px] mt-[-22px]'><span className=''>$2,650</span> <span className='ml-[14px]'>Bids: 12</span></p>
-
-                           
+                    {/* Conditional rendering for "No favorites yet" message */}
+                    {favoriteItems.length === 0 && (
+                        <div className='text-center py-8 justify-center place-items-center border-t-2 border-[#DCE5F3]' id="addedSectionPre">
+                            <p className='text-xl font-semibold'>No favorites yet</p>
+                            <p className='py-4 w-[60%] mx-auto'>Click the heart icon on any item to add it to your favorites</p> {/* Centered paragraph */}
                         </div>
+                    )}
 
-                        
+                    {/* Container for dynamically rendered favorite items */}
+                    <div id='addedContainer'>
+                        {favoriteItems.map((item) => (
+                            <div key={item.id} className='border-t-2 border-[#DCE5F3] p-4'>
+                                <div className='flex gap-4'>
+                                    <div className='flex-shrink-0'> {/* Prevent image squishing */}
+                                        <img src={item.image} className='w-16 h-12 object-cover overflow-hidden' alt={item.title} /> {/* Added object-cover & alt */}
+                                    </div>
 
-                    </div> */}
-                    <div className='flex justify-between px-5 border-t-2 border-[#DCE5F3] pt-4'>
-                        <p className='text-xl font-semibold'>Total bids Amount</p>
-                        <p className='text-xl font-semibold'>$0000</p>
+                                    <div className='flex-grow'> {/* Allow text content to grow */}
+                                        <h1>{item.title}</h1>
+                                        <div className='flex justify-between items-center mt-1'> {/* Adjusted layout */}
+                                            <p>
+                                                <span className='font-semibold'>${item.currentBidPrice}</span> {/* Made price bold */}
+                                                <span className='ml-[14px] text-sm text-gray-600'>Bids: {item.bidsCount}</span> {/* Adjusted bids text */}
+                                            </p>
+                                            <button
+                                                onClick={() => handleRemoveItem(item.id)}
+                                                className='btn btn-ghost p-0 hover:bg-red-100 rounded-full' /* Adjusted styling */
+                                                aria-label={`Remove ${item.title} from favorites`} // Accessibility
+                                            >
+                                                <RxCross2 size="20" className="text-gray-500 hover:text-red-500"/> {/* Adjusted size/color */}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Separator only if there are items */}
+                    {favoriteItems.length > 0 && <div className='border-t-2 border-[#DCE5F3]'></div>}
+
+                    {/* Total Bids Section */}
+                    <div className='flex justify-between px-5 pt-4 mt-2'> {/* Added small top margin */}
+                        <p className='text-xl font-semibold'>Total favorites Value</p> {/* Changed text slightly */}
+                        <p id="totalBids" className='text-xl font-semibold'>
+                           ${totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {/* Format price */}
+                        </p>
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-
-
-
-    )
+    );
 }
 
-export default Mainbody
+export default Mainbody;
