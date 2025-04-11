@@ -13,44 +13,36 @@ const Mydata = ({ mydata, handleAddData }) => {
     const targetButtonRef = useRef(null);
 
     useEffect(() => {
-        // Find the single global follower element
         const followerElement = document.getElementById('cursor-follower-icon');
-        // Get the current button element from the ref
         const buttonElement = targetButtonRef.current;
 
-        // Only proceed if both the button and the follower exist
         if (!buttonElement || !followerElement) {
-            return; // Exit if elements aren't found
+            return; 
         }
 
-        // --- Define Event Handlers directly inside useEffect ---
         const handleMouseEnter = () => {
-            followerElement.style.display = 'block'; // Show follower
+            followerElement.style.display = 'block'; 
         };
 
         const handleMouseMove = (event) => {
-            // Position the follower based on mouse coordinates
             followerElement.style.left = `${event.clientX}px`;
             followerElement.style.top = `${event.clientY}px`;
         };
 
         const handleMouseLeave = () => {
-            followerElement.style.display = 'none'; // Hide follower
+            followerElement.style.display = 'none'; 
         };
 
-        // --- Attach Event Listeners directly to the button element ---
         buttonElement.addEventListener('mouseenter', handleMouseEnter);
         buttonElement.addEventListener('mousemove', handleMouseMove);
         buttonElement.addEventListener('mouseleave', handleMouseLeave);
 
-        // --- Cleanup Function ---
-        // This is CRUCIAL to prevent memory leaks when the component unmounts
+
         return () => {
             buttonElement.removeEventListener('mouseenter', handleMouseEnter);
             buttonElement.removeEventListener('mousemove', handleMouseMove);
             buttonElement.removeEventListener('mouseleave', handleMouseLeave);
-            // Optional: Ensure follower is hidden if mouse leaves while component unmounts
-            // followerElement.style.display = 'none';
+      
         };
 
     }, []);
@@ -73,10 +65,10 @@ const Mydata = ({ mydata, handleAddData }) => {
             <div><p className='font-semibold'>${mydata.currentBidPrice}</p></div>
             <div><p className='font-semibold'>{mydata.timeLeft} Days left</p></div>
             <button id={`heartBtnContainer-${mydata.id}`}  className=' text-2xl cursor-pointer' onClick={() => handleAddData(mydata)}>
-                <i id={`heartBtn-${mydata.id}`} className="fa-regular hover:text-red-500 fa-heart"></i>
+                <i id={`heartBtn-${mydata.id}`} className="fa-regular hover:text-red-500 fa-heart ml-[-71px]"></i>
             </button>
 
-            <button ref={targetButtonRef} className='hidden show-ban-on-hover' id={`heartBtnaD-${mydata.id}`} aria-label="Favorite status indicator"><i className="fa-solid fa-heart text-red-500 hidden text-2xl border-none"></i>
+            <button ref={targetButtonRef} className='hidden show-ban-on-hover' id={`heartBtnaD-${mydata.id}`} aria-label="Favorite status indicator"><i className="fa-solid fa-heart text-red-500 hidden text-2xl border-none ml-[-71px]"></i>
             
             </button>
   

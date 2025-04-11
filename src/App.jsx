@@ -6,8 +6,8 @@ import Navbar from './Components/Navbar/Navbar'
 import Hero from './Components/Hero/Hero'
 import Footer from './Components/Footer/Footer'
 import Mainbody from './Components/Mainbody/Mainbody'
-import { ToastContainer } from 'react-toastify'; // 1. Import ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // 2. Import the CSS
+import { ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 
 function App() {
@@ -24,17 +24,16 @@ function App() {
 
       <div id="cursor-follower-icon" className="cursor-follower-base"></div>
       <ToastContainer
-        position="top-right" // Position toasts in the top-right corner
-        autoClose={3000} // Auto close after 3 seconds (3000ms)
-        hideProgressBar={false} // Show the progress bar
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false} 
         newestOnTop={false}
-        closeOnClick // Close toast when clicked (optional)
+        closeOnClick 
         rtl={false}
         pauseOnFocusLoss
         draggable
-        pauseOnHover // Pause timer when hovered
-        theme="light" // Or "dark" or "colored"
-        // progressStyle={{ background: 'linear-gradient(to right, lightgreen, cyan, hotpink)' }} // Example gradient - adjust as needed!
+        pauseOnHover 
+        theme="light" 
       />
     </>
   )
